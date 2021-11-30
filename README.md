@@ -2,7 +2,9 @@
 
 ## Analiza šahovsih partij
 
-Pri projektni nalogi bom analiziral statistiko šahovskih partij. Opazoval bom partije povprečnih šahistov in partije Magnusa Carlsena, odigrane med 2017 in 2021 preko platforme [Lichess](https://lichess.org/). Analiziral bom tudi partije dvanajstih šahovskih mojstrov, ki se kot prvi pojavijo na največji spletni platformi [Chess.com](https://www.chess.com/) in 2724 tako imenovanih "Immortal games", ki veljajo za najbolj nepozabne partije v zgodovini šaha. Cilji:
+Pri projektni nalogi bom analiziral statistiko šahovskih partij. Opazoval bom partije povprečnih šahistov in partije Magnusa Carlsena, odigrane med 2017 in 2021 preko platforme [Lichess](https://lichess.org/). Analiziral bom tudi partije dvanajstih šahovskih mojstrov, ki se kot prvi pojavijo na največji spletni platformi [Chess.com](https://www.chess.com/) in 2724 tako imenovanih "Immortal games", ki veljajo za najbolj nepozabne partije v zgodovini šaha. 
+
+Cilji:
 - ugotoviti, katere šahovske otvoritve so statistično najboljše za določeno časovno omejitev in za različno dobre igralce,
 - primerjati šahovske mojstre glede na njihov stil igre in njihov uspeh, 
 - primerjati partije Magnusa Carlsena preko spleta in partije šahovskih mojstrov v živo,
