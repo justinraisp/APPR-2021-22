@@ -4,23 +4,28 @@
 
 Pri projektni nalogi bom analiziral statistiko šahovskih partij. Opazoval bom partije povprečnih šahistov in partije Magnusa Carlsena, odigrane med 2017 in 2021 preko platforme [Lichess](https://lichess.org/). Analiziral bom tudi partije dvanajstih šahovskih mojstrov, ki se kot prvi pojavijo na največji spletni platformi [Chess.com](https://www.chess.com/) in 2724 tako imenovanih "Immortal games", ki veljajo za najbolj nepozabne partije v zgodovini šaha. 
 
-Cilji:
+### Cilji:
+
 - ugotoviti, katere šahovske otvoritve so statistično najboljše za določeno časovno omejitev in za različno dobre igralce,
 - primerjati šahovske mojstre glede na njihov stil igre in njihov uspeh, 
 - primerjati partije Magnusa Carlsena preko spleta in partije šahovskih mojstrov v živo,
 - primerjati nepozabne partije s partijami šahovskih mojstrov
 
-Tabela 1: Partije igralcev na [Lichess](https://lichess.org/)
-  - Stolpci: rating črnega, rating belega, razlika v ratingu, tip igre, časovna omejitev, otvoritev, število potez v otvoritvi, zmagovalec, tip konca igre
+### Tabele:
 
-Tabela 2: Partije Magnusa Carlsena na [Lichess](https://lichess.org/)
-  - Stolpci: rating nasprotnika, naziv nasprotnika, razlika v ratingu, tip igre, časovna omejitev, odprtje, rezultat
+- Tabela 1: Partije igralcev na [Lichess](https://lichess.org/)
+    - Stolpci: rating črnega, rating belega, razlika v ratingu, tip igre, časovna omejitev, otvoritev, število potez v otvoritvi, zmagovalec, tip konca igre
 
-Tabela 3: Šahovski mojstri
-  - Stolpci: ime mojstra, dogodek, lokacija, nasprotnik, rating nasprotnika, ekipi igralcev, odprtje, rezultat, vrednost žrtvovanih figur, figure ob koncu igre
+- Tabela 2: Partije Magnusa Carlsena na [Lichess](https://lichess.org/)
+    - Stolpci: rating nasprotnika, naziv nasprotnika, razlika v ratingu, tip igre, časovna omejitev, odprtje, rezultat
 
-Tabela 4: Nepozabne igre
-  - Stolpci: ime črnega, ime belega, dogodek, lokacija, odprtje, rezultat, število potez
+- Tabela 3: Šahovski mojstri
+    - Stolpci: ime mojstra, dogodek, lokacija, nasprotnik, rating nasprotnika, ekipi igralcev, odprtje, rezultat, vrednost žrtvovanih figur, figure ob koncu igre
+
+- Tabela 4: Nepozabne igre
+    - Stolpci: ime črnega, ime belega, dogodek, lokacija, odprtje, rezultat, število potez
+
+
 
 Viri: 
 - https://www.kaggle.com/zq1200/magnus-carlsen-lichess-games-dataset
