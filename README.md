@@ -8,18 +8,16 @@ Pri projektni nalogi bom analiziral statistiko šahovskih partij. Opazoval bom p
 - primerjati partije Magnusa Carlsena preko spleta in partije šahovskih mojstrov v živo,
 - primerjati nepozabne partije s partijami šahovskih mojstrov
 
-Tabele:
+Tabela 1: Partije igralcev na [Lichess](https://lichess.org/)
+  - Stolpci: rating črnega, rating belega, razlika v ratingu, tip igre, časovna omejitev, otvoritev, število potez v otvoritvi, zmagovalec, tip konca igre
 
-1.Partije igralcev na [Lichess](https://lichess.org/):
-  - Stolpci: rating črnega, rating belega, razlika v ratingu, tip igre, časovna omejitev,     otvoritev, število potez v otvoritvi, zmagovalec, tip konca igre
-
-2. Partije Magnusa Carlsena na [Lichess](https://lichess.org/):
+Tabela 2: Partije Magnusa Carlsena na [Lichess](https://lichess.org/)
   - Stolpci: rating nasprotnika, naziv nasprotnika, razlika v ratingu, tip igre, časovna omejitev, odprtje, rezultat
 
-3. Šahovski mojstri:
+Tabela 3: Šahovski mojstri
   - Stolpci: ime mojstra, dogodek, lokacija, nasprotnik, rating nasprotnika, ekipi igralcev, odprtje, rezultat, vrednost žrtvovanih figur, figure ob koncu igre
 
-4. Nepozabne igre:
+Tabela 4: Nepozabne igre
   - Stolpci: ime črnega, ime belega, dogodek, lokacija, odprtje, rezultat, število potez
 
 Viri: 
