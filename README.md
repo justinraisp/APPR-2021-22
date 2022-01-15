@@ -17,7 +17,6 @@ Pri projektni nalogi bom analiziral statistiko šahovskih partij. Opazoval bom p
     - Stolpci: rating črnega, rating belega, razlika v ratingu, tip igre, časovna omejitev, otvoritev, število potez v otvoritvi, zmagovalec, tip konca igre
 
 - Tabela 2: Partije Magnusa Carlsena na [Lichess](https://lichess.org/)
-<<<<<<< HEAD
     - Stolpci: rating nasprotnika, naziv nasprotnika, razlika v ratingu, tip igre, časovna omejitev, otvoritev, rezultat
 
 - Tabela 3: Šahovski mojstri
@@ -25,16 +24,6 @@ Pri projektni nalogi bom analiziral statistiko šahovskih partij. Opazoval bom p
 
 - Tabela 4: Nepozabne igre
     - Stolpci: ime črnega, ime belega, dogodek, lokacija, otvoritev, rezultat, število potez
-=======
-    - Stolpci: rating nasprotnika, naziv nasprotnika, razlika v ratingu, tip igre, datum, časovna omejitev, odprtje, rezultat
-
-- Tabela 3: Šahovski mojstri
-    - Stolpci: ime mojstra, dogodek, drzava, celina, nasprotnik, rating nasprotnika, ekipi igralcev, odprtje, rezultat, vrednost žrtvovanih figur, figure ob koncu igre
-
-- Tabela 4: Nepozabne igre
-    - Stolpci: ime črnega, ime belega, dogodek, drzava, celina, odprtje, rezultat, število potez
->>>>>>> 12d7845f19ced4c7a6a48726353ac425dcf17403
-
 
 
 Viri: 
