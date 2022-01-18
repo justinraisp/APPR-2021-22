@@ -27,7 +27,7 @@ graf_rezultati <- ggplot(rezultati_magnus, aes(x = "", y = Odstotki, fill = Rezu
   coord_polar(theta = "y") + 
   labs(title="Rezultati iger") +
   theme_void()
-
+graf_rezultati
 
 
 #Otvoritve
@@ -35,14 +35,33 @@ graf_rezultati <- ggplot(rezultati_magnus, aes(x = "", y = Odstotki, fill = Rezu
 otvoritve_magnusa <- igre_magnus %>% group_by(Rezultat_Magnusa, Barva_Magnusa, Otvoritev) %>% summarise(Stevilo_iger = n())
 otvoritve_magnusa <- filter(otvoritve_magnusa, Rezultat_Magnusa == "won") %>% arrange(desc(Stevilo_iger))
 otvoritve_magnusa_beli <- filter(otvoritve_magnusa, Barva_Magnusa == "white")
-otvoritve_magnusa_crni <- filter(otvoritve_magnusa, Barva_Magnusa == "black")
+odstotki_otvoritve_beli <- round(otvoritve_magnusa_beli[,"Stevilo_iger"] / sum(otvoritve_magnusa_beli[,"Stevilo_iger"]), digits=4)
+otvoritve_magnusa_beli["Odstotki"] <- odstotki_otvoritve_beli * 100
 
+igre_magnus["Barva_Magnusa"]
+
+otvoritve_magnusa_crni <- filter(otvoritve_magnusa, Barva_Magnusa == "black")
+odstotki_otvoritve_crni <- round(otvoritve_magnusa_crni[,"Stevilo_iger"] / sum(otvoritve_magnusa_crni[,"Stevilo_iger"]), digits=4)
+otvoritve_magnusa_crni["Odstotki"] <- odstotki_otvoritve_crni * 100
 ggplot(otvoritve_magnusa_beli[1:10,], aes(x = Stevilo_iger, y = Otvoritev))
 
 
 graf_beli <- ggplot(otvoritve_magnusa_beli[1:10,]) + 
-  aes(x=Stevilo_iger, y = reorder(Otvoritev, Stevilo_iger)) + geom_col()
+  aes(x=Odstotki, y = reorder(Otvoritev, Odstotki)) + geom_col() + xlim(0,13.5)
 graf_crni <- ggplot(otvoritve_magnusa_crni[1:10,]) + 
-  aes(x=Stevilo_iger, y = reorder(Otvoritev, Stevilo_iger)) + geom_col()
+  aes(x=Odstotki, y = reorder(Otvoritev, Odstotki)) + geom_col() + xlim(0,13.5)
 
 graf_otvoritve <- graf_beli / graf_crni
+graf_otvoritve
+
+
+#Rating
+
+graf_ratingi <- ggplot(magnus_ratingi) + aes(x=Datum, y=Rating_Magnusa) +geom_curve()
+graf_ratingi
+
+plot <- ggplot(NULL, aes(ID, Rating)) + geom_step(data= magnus_ratingi_Dr_Drunkenstein, color="red") +
+  geom_step(data=magnus_ratingi_Dr_Nykerstein) + xlim(0,550) + ylim(2600,3250) + xlab("Število iger")
+plot
+
+
