@@ -46,26 +46,28 @@ igre_magnus["Barva_Magnusa"]
 otvoritve_magnusa_crni <- filter(otvoritve_magnusa, Barva_Magnusa == "black")
 odstotki_otvoritve_crni <- round(otvoritve_magnusa_crni[,"Stevilo_iger"] / sum(otvoritve_magnusa_crni[,"Stevilo_iger"]), digits=4)
 otvoritve_magnusa_crni["Odstotki"] <- odstotki_otvoritve_crni * 100
-ggplot(otvoritve_magnusa_beli[1:10,], aes(x = Stevilo_iger, y = Otvoritev))
+
 
 
 graf_beli <- ggplot(otvoritve_magnusa_beli[1:10,]) + 
-  aes(x=Odstotki, y = reorder(Otvoritev, Odstotki)) + geom_col() + xlim(0,13.5)
+  aes(x=Odstotki, y = reorder(Otvoritev, Odstotki)) + geom_col() + xlim(0,15)
 graf_crni <- ggplot(otvoritve_magnusa_crni[1:10,]) + 
-  aes(x=Odstotki, y = reorder(Otvoritev, Odstotki)) + geom_col() + xlim(0,13.5)
-
+  aes(x=Odstotki, y = reorder(Otvoritev, Odstotki)) + geom_col() + xlim(0,15)
+graf_crni
 graf_otvoritve <- graf_beli / graf_crni
 graf_otvoritve
 
 
-#Rating
-
-graf_ratingi <- ggplot(magnus_ratingi) + aes(x=Datum, y=Rating_Magnusa) +geom_curve()
-graf_ratingi
-
-plot <- ggplot(NULL, aes(ID, Rating)) + geom_step(data= magnus_ratingi_Dr_Drunkenstein, color="red") +
+#Rating lichess
+graf_ratingi_lichess <- ggplot(NULL, aes(ID, Rating)) + geom_step(data= magnus_ratingi_Dr_Drunkenstein, color="red") +
   geom_step(data=magnus_ratingi_Dr_Nykerstein) + xlim(0,550) + ylim(2600,3250) + xlab("Število iger")
-plot
+graf_ratingi_lichess
+
+
+#Rating over the board
+graf_ratingi_otb <- ggplot(igre_magnus_otb_ratingi, aes(x=Date, y=Rating_Magnusa, group=1)) +
+  geom_line() + scale_x_date(date_labels = "%Y")
+graf_ratingi_otb
 
 
 #Svet
@@ -73,8 +75,10 @@ tmap_mode("view")
 
 tm_shape(igre_magnus_otb_turnirji_lokacije) + 
   tm_polygons("Stevilo_iger", popup.vars = c("Število iger:" = "Stevilo_iger")) + 
-  tm_layout("Število iger v posamezni državi")
-                                                                                                                                        )
+  tm_legend(position = c("left", "bottom"), 
+            frame = TRUE,
+            bg.color="lightblue", title="Število iger v posamezni državi")
+                                                                                                                                        
 
 tm_shape(igre_magnus_otb_turnirji_lokacije) + tm_fill("Stevilo_iger", title = "Število iger", style = "fixed",
                                                       breaks = c(1, 100, 200, 300, 400, 500)) + tm_polygons("Stevilo_iger", popup.vars = c("Število iger:" = "Stevilo_iger"))

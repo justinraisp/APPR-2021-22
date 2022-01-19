@@ -122,7 +122,15 @@ spremembe <- c("BUL" = "BGR", "CRO" = "HRV", "DEN"="DNK", "ENG"="GBR", "GER"="DE
                "KSA"="SAU", "LBA"="LBY", "NED"="NLD", "SCO"="GBR", "SUI"="CHE", "UAE"="ARE")
 igre_magnus_otb$Site <- igre_magnus_otb$Site %>% str_replace_all(spremembe)
 
-igre_magnus_otb_ratingi <- igre_magnus_otb %>% group_by(Rating_Magnusa) %>% summarise(Stevilo_iger = n())
+#Ratingi over the board
+igre_magnus_otb_ratingi <- igre_magnus_otb %>% group_by(Rating_Magnusa, Date) %>% summarise()
+igre_magnus_otb_ratingi <- igre_magnus_otb_ratingi[order(as.Date(igre_magnus_otb_ratingi$Date, format="%Y.%m.%d")),]
+igre_magnus_otb_ratingi$Date <- as.Date(igre_magnus_otb_ratingi$Date, format="%Y.%m.%d")
+igre_magnus_otb_ratingi <- igre_magnus_otb_ratingi[-c(1:8),]
+igre_magnus_otb_ratingi <- igre_magnus_otb_ratingi[-c(1887,1888),]
+ponovitve_ratinga <- c(duplicated(igre_magnus_otb_ratingi$Rating_Magnusa))
+igre_magnus_otb_ratingi <- igre_magnus_otb_ratingi[!ponovitve_ratinga,]
+
 
 
 igre_magnus_otb_turnirji_lokacije <- igre_magnus_otb %>% group_by(Site) %>%
