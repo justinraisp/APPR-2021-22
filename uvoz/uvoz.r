@@ -5,8 +5,12 @@ library(stringr)
 library(tidyr)
 library(bigchess)
 library(reticulate)
+library(tmap)
 
 sl <- locale("sl", decimal_mark=",", grouping_mark=".")
+
+#KRATICE ZA DRZAVE
+data("World")
 
 
 #SLOVAR ZA OTVORITVE
@@ -66,7 +70,7 @@ igre_magnus <- igre_magnus %>% mutate(Datum = as.Date(Datum, tryFormats = c("%Y.
 igre_magnus <- igre_magnus %>% replace_na(list(Tip_otvoritve = "Neznano", Otvoritev = "Neznano"))
 
 #Dodamo ratinge od Magnusa, ki jih zelimo prikazat
-ratingi_funkcija <- function(df, ime){
+ratingi_funkcija_lichess <- function(df, ime){
   x <- numeric(length(df[,"Rezultat_Magnusa"]))
   for (i in 1:length(df[,"Rezultat_Magnusa"])) {
     if(df[i, "Barva_Magnusa"] == "white" && df[i, "Beli"] == ime){
@@ -83,18 +87,48 @@ ratingi_funkcija <- function(df, ime){
 
 igre_magnus <- igre_magnus[igre_magnus$Tip_igre == "Rated Bullet game",]
 
-igre_magnus["Rating_Magnusa_Ny"] <- ratingi_funkcija(igre_magnus, "DrNykterstein")
+igre_magnus["Rating_Magnusa_Ny"] <- ratingi_funkcija_lichess(igre_magnus, "DrNykterstein")
 magnus_ratingi_Dr_Nykerstein <- igre_magnus[igre_magnus$Rating_Magnusa_Ny != "0",]["Rating_Magnusa_Ny"]
 magnus_ratingi_Dr_Nykerstein <- as.data.frame(apply(magnus_ratingi_Dr_Nykerstein, 2,rev))
 magnus_ratingi_Dr_Nykerstein <- tibble::rowid_to_column(magnus_ratingi_Dr_Nykerstein, "ID")
 colnames(magnus_ratingi_Dr_Nykerstein) <- c("ID", "Rating")
 magnus_ratingi_Dr_Nykerstein <- magnus_ratingi_Dr_Nykerstein[magnus_ratingi_Dr_Nykerstein$Rating > 1500,]
 
-igre_magnus["Rating_Magnusa_Dr"] <- ratingi_funkcija(igre_magnus, "DrDrunkenstein")
+igre_magnus["Rating_Magnusa_Dr"] <- ratingi_funkcija_lichess(igre_magnus, "DrDrunkenstein")
 magnus_ratingi_Dr_Drunkenstein <-igre_magnus[igre_magnus$Rating_Magnusa_Dr != "0",]["Rating_Magnusa_Dr"]
 magnus_ratingi_Dr_Drunkenstein <- as.data.frame(apply(magnus_ratingi_Dr_Drunkenstein, 2,rev))
 magnus_ratingi_Dr_Drunkenstein <- tibble::rowid_to_column(magnus_ratingi_Dr_Drunkenstein, "ID")
 colnames(magnus_ratingi_Dr_Drunkenstein) <- c("ID", "Rating")
+
+#Turnirske igre
+ratingi_funkcija_otb <- function(df){
+  x <- numeric(length(df[,1]))
+  for (i in 1:length(df[,1])) {
+    if(df[i, "White"] == "Carlsen,M"){
+      x[i] <- df[i, "WhiteElo"]
+    }else if(df[i, "Black"] == "Carlsen,M") {
+    x[i] <- df[i, "BlackElo"]
+    }else
+    x[i] <- 0
+  }
+  return(x)
+}
+igre_magnus_otb <- read.pgn('podatki/Carlsen.pgn', add.tags = c("WhiteElo", "BlackElo")) %>% as.data.frame()
+igre_magnus_otb[10:51] <- list(NULL)
+igre_magnus_otb["Rating_Magnusa"] <- ratingi_funkcija_otb(igre_magnus_otb)
+igre_magnus_otb$Site <- str_sub(igre_magnus_otb$Site, -3)
+
+spremembe <- c("BUL" = "BGR", "CRO" = "HRV", "DEN"="DNK", "ENG"="GBR", "GER"="DEU", "GRE"="GRC",
+               "KSA"="SAU", "LBA"="LBY", "NED"="NLD", "SCO"="GBR", "SUI"="CHE", "UAE"="ARE")
+igre_magnus_otb$Site <- igre_magnus_otb$Site %>% str_replace_all(spremembe)
+
+igre_magnus_otb_ratingi <- igre_magnus_otb %>% group_by(Rating_Magnusa) %>% summarise(Stevilo_iger = n())
+
+
+igre_magnus_otb_turnirji_lokacije <- igre_magnus_otb %>% group_by(Site) %>%
+  summarise(Stevilo_iger = n()) %>% as.data.frame()
+igre_magnus_otb_turnirji_lokacije <- merge(World, igre_magnus_otb_turnirji_lokacije, by.x = "iso_a3", by.y = "Site")
+igre_magnus_otb_turnirji_lokacije <- igre_magnus_otb_turnirji_lokacije[c("name", "Stevilo_iger")]
 
 #IGRE VELEMOJSTROV
 
@@ -117,5 +151,3 @@ igre_mojstrov <- igre_mojstrov %>% mutate(Leto = str_replace_all(Leto, "[?]", "1
 #NEPOZABNE IGRE
 
 nepozabne_igre <- read.pgn('podatki/2724_immortal_games.pgn') %>% as.data.frame()
-
-

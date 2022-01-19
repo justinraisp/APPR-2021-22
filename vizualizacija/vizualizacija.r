@@ -5,6 +5,9 @@ library(ggmap)
 
 library(gtable)
 library(patchwork)
+library(httr)
+library(XML)
+library(tmap)
 
 
 ##MAGNUS
@@ -65,3 +68,13 @@ plot <- ggplot(NULL, aes(ID, Rating)) + geom_step(data= magnus_ratingi_Dr_Drunke
 plot
 
 
+#Svet
+tmap_mode("view")
+
+tm_shape(igre_magnus_otb_turnirji_lokacije) + 
+  tm_polygons("Stevilo_iger", popup.vars = c("Število iger:" = "Stevilo_iger")) + 
+  tm_layout("Število iger v posamezni državi")
+                                                                                                                                        )
+
+tm_shape(igre_magnus_otb_turnirji_lokacije) + tm_fill("Stevilo_iger", title = "Število iger", style = "fixed",
+                                                      breaks = c(1, 100, 200, 300, 400, 500)) + tm_polygons("Stevilo_iger", popup.vars = c("Število iger:" = "Stevilo_iger"))
