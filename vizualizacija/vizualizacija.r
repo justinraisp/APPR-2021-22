@@ -13,13 +13,6 @@ library(tmap)
 ##MAGNUS
 #Tortni diagram za rezultate
 
-rezultati_magnus <- igre_magnus %>% count(Rezultat_Magnusa)
-rezultati_magnus["Rezultat_Magnusa"] <- c("Remi", "Poraz", "Zmaga")
-odstotki <- round(rezultati_magnus[, "n"] / sum(rezultati_magnus[, "n"]), digits = 2)
-rezultati_magnus["Odstotki"] <- odstotki
-oznake <- paste(odstotki * 100, "%", sep="")
-rezultati_magnus["Oznake"] <- oznake
-
 graf_rezultati <- ggplot(rezultati_magnus, aes(x = "", y = Odstotki, fill = Rezultat_Magnusa)) +
   geom_col(color = "black") +
   geom_label(aes(label = oznake), color = c("white", "white", "white"),
@@ -34,20 +27,6 @@ graf_rezultati
 
 
 #Otvoritve
-
-otvoritve_magnusa <- igre_magnus %>% group_by(Rezultat_Magnusa, Barva_Magnusa, Otvoritev) %>% summarise(Stevilo_iger = n())
-otvoritve_magnusa <- filter(otvoritve_magnusa, Rezultat_Magnusa == "won") %>% arrange(desc(Stevilo_iger))
-otvoritve_magnusa_beli <- filter(otvoritve_magnusa, Barva_Magnusa == "white")
-odstotki_otvoritve_beli <- round(otvoritve_magnusa_beli[,"Stevilo_iger"] / sum(otvoritve_magnusa_beli[,"Stevilo_iger"]), digits=4)
-otvoritve_magnusa_beli["Odstotki"] <- odstotki_otvoritve_beli * 100
-
-igre_magnus["Barva_Magnusa"]
-
-otvoritve_magnusa_crni <- filter(otvoritve_magnusa, Barva_Magnusa == "black")
-odstotki_otvoritve_crni <- round(otvoritve_magnusa_crni[,"Stevilo_iger"] / sum(otvoritve_magnusa_crni[,"Stevilo_iger"]), digits=4)
-otvoritve_magnusa_crni["Odstotki"] <- odstotki_otvoritve_crni * 100
-
-
 
 graf_beli <- ggplot(otvoritve_magnusa_beli[1:10,]) + 
   aes(x=Odstotki, y = reorder(Otvoritev, Odstotki)) + geom_col() + xlim(0,15)
@@ -66,9 +45,9 @@ graf_ratingi_lichess
 
 #Rating over the board
 graf_ratingi_otb <- ggplot(igre_magnus_otb_ratingi, aes(x=Date, y=Rating_Magnusa, group=1)) +
-  geom_line() + scale_x_date(date_labels = "%Y")
+  geom_line() + scale_x_date(date_labels = "%Y") + scale_y_continuous(limit=c(2000,3000))
 graf_ratingi_otb
-
+graf_ratingi_otb + geom_smooth(method = "glm", formula = y ~ poly(x,16))
 
 #Svet
 tmap_mode("view")
