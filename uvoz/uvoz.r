@@ -6,6 +6,7 @@ library(tidyr)
 library(bigchess)
 library(reticulate)
 library(tmap)
+library(rvest)
 
 sl <- locale("sl", decimal_mark=",", grouping_mark=".")
 
@@ -27,20 +28,19 @@ otvoritve[3:4] <- list(NULL)
 colnames(otvoritve) <- c("Otvoritev_eco", "Otvoritev","Tip_otvoritve")
 
 
-#IGRE POVPRECNIH IGRALCEV NA LICHESS
-
-lichess_igre <- read_csv(file = 'podatki/igre_lichess.csv',  locale = locale(encoding = "Windows-1250")) %>% as.data.frame()
-
-#Pobrisemo nepotrebne stolpce
-lichess_igre[1] <- NULL
-lichess_igre[2:3] <- list(NULL)
-lichess_igre[6] <- NULL
-lichess_igre[7] <- NULL
-lichess_igre[8:9] <- list(NULL)
-
-#Preimenujemo stolpce
-colnames(lichess_igre) <- c("Rated", "St_potez", "Tip_zmage", "Zmagovalec", "Casovna_omejitev", "Rating_belega", "Rating_crnega", "Otvoritev", "St_potez_v_odprtju")
-
+# #IGRE POVPRECNIH IGRALCEV NA LICHESS
+# 
+# lichess_igre <- read_csv(file = 'podatki/igre_lichess.csv',  locale = locale(encoding = "Windows-1250")) %>% as.data.frame()
+# 
+# #Pobrisemo nepotrebne stolpce
+# lichess_igre[1] <- NULL
+# lichess_igre[2:3] <- list(NULL)
+# lichess_igre[6] <- NULL
+# lichess_igre[7] <- NULL
+# lichess_igre[8:9] <- list(NULL)
+# 
+# #Preimenujemo stolpce
+# colnames(lichess_igre) <- c("Rated", "St_potez", "Tip_zmage", "Zmagovalec", "Casovna_omejitev", "Rating_belega", "Rating_crnega", "Otvoritev", "St_potez_v_odprtju")
 
 
 
@@ -156,28 +156,99 @@ igre_magnus_otb_turnirji_lokacije <- igre_magnus_otb_turnirji_lokacije[c("name",
 
 
 
+#VELEMOJSTRI PO DRZAVAH
+
+url_gm <- read_html("https://en.wikipedia.org/wiki/List_of_chess_grandmasters") %>% html_table(fill = TRUE)
+velemojstri <- url_gm[[2]]
+velemojstri <- velemojstri[velemojstri$Died == "",]
+
+#Potrebno zamenjat bivse drzave in popravit, da se imensko ujema s populacijo
+velemojstri <- velemojstri[velemojstri$Federation != "Yugoslavia",]
+velemojstri <- velemojstri[velemojstri$Federation != "Soviet Union",]
+velemojstri <- velemojstri[velemojstri$Federation != "West Germany",]
+velemojstri <- velemojstri[velemojstri$Federation != "Yugoslavia (S&M)",]
+velemojstri <- velemojstri[velemojstri$Federation != "Czecho­slovakia",]
+velemojstri <- velemojstri[velemojstri$Federation != "East Germany",]
+velemojstri <- velemojstri[velemojstri$Federation != "Serbia and Montenegro",]
+velemojstri <- velemojstri[velemojstri$Federation != "FIDE",]
+spremembe2 <- c("Czech Republic (Czechia)" = "Czech Republic", "England" = "United Kingdom",
+                "Scotland" = "United Kingdom", "Faroe Islands" = "Faeroe Islands", "Moldava" = "Moldova")
+velemojstri$Federation <- velemojstri$Federation %>% str_replace_all(spremembe2)
+
+velemojstri <- velemojstri %>% group_by(Federation) %>% summarise(Stevilo_velemojstrov = n()) %>% as.data.frame()
+
+
+
+#Stevilo prebivalcev v posamezni drzavi 
+url_populacija <- read_html("https://www.worldometers.info/world-population/population-by-country/") %>% html_table(fill = TRUE)
+drzave_populacija <- url_populacija[[1]]
+drzave_populacija <- drzave_populacija[c("Country (or dependency)", "Population (2020)")]
+colnames(drzave_populacija) <- c("Drzava", "Populacija")
+drzave_populacija$Drzava <- drzave_populacija$Drzava %>% str_replace_all("Czech Republic (Czechia)","Czech Republic")
+
+
+velemojstri_populacija <- merge(velemojstri, drzave_populacija, by.x = "Federation", by.y = "Drzava")
+velemojstri_populacija$Stevilo_velemojstrov <- as.numeric(velemojstri_populacija$Stevilo_velemojstrov)
+velemojstri_populacija$Populacija <- gsub(",", "", velemojstri_populacija$Populacija)
+velemojstri_populacija$Populacija <- as.numeric(velemojstri_populacija$Populacija)
+velemojstri_per_capita <- (velemojstri_populacija$Stevilo_velemojstrov / velemojstri_populacija$Populacija) * 1000000
+
+velemojstri_populacija["Velemojstri_per_capita"] <- velemojstri_per_capita
+colnames(velemojstri_populacija)[1] <- "Drzava"
 
 
 
 
-#IGRE VELEMOJSTROV
+#BDP per capita 
+url_bdp <- read_html("https://www.worldometers.info/gdp/gdp-per-capita/") %>% html_table(fill =TRUE)
+drzave_bdp <- url_bdp[[1]]
+drzave_bdp <- drzave_bdp[c("Country", "GDP (nominal) per capita (2017)")]
+colnames(drzave_bdp) <- c("Drzava", "BDP_per_capita")
+drzave_bdp <- drzave_bdp %>% mutate(BDP_per_capita = str_replace_all(BDP_per_capita, "[$]", ""))
+drzave_bdp <- drzave_bdp %>% mutate(BDP_per_capita = str_replace_all(BDP_per_capita, "[,]", ""))
+drzave_bdp$BDP_per_capita <- as.numeric(drzave_bdp$BDP_per_capita)
 
-igre_mojstrov <- read_csv(file = 'podatki/igre_mojstrov.csv',  locale = locale(encoding = "Windows-1250")) %>% as.data.frame()
-
-#Pobrisemo nepotrebne stolpce
-igre_mojstrov[4] <- NULL
-igre_mojstrov[9] <- NULL
-igre_mojstrov[10] <- NULL
-
-#Preimenujemo stolpce
-colnames(igre_mojstrov) <- c("Sahovski_mojster", "Barva", "Nasprotnik", "Rating_nasprotnika", "Rezultat",
-                             "Dogodek", "Lokacija", "Leto", "St_potez")
-
-#Uredimo datume
-igre_mojstrov <- igre_mojstrov %>% mutate(Leto = str_replace_all(Leto, "[?]", "1")) %>% mutate(Leto = as.POSIXct(Leto, format="%Y.%m.%d")) %>%
-  mutate(Leto = format(Leto, format="%Y"))
+drzave_bdp$Drzava <- drzave_bdp$Drzava %>% str_replace_all("Czech Republic (Czechia)","Czech Republic")
 
 
-#NEPOZABNE IGRE
+velemojstri_drzave <- left_join(velemojstri_populacija, drzave_bdp, by="Drzava")
 
-nepozabne_igre <- read.pgn('podatki/2724_immortal_games.pgn') %>% as.data.frame()
+
+
+
+#Delez BDP-ja porabljenega za izobrazbo
+url_izobrazba <- read_html("https://en.wikipedia.org/wiki/List_of_countries_by_spending_on_education_(%25_of_GDP)") %>% html_table(fill=TRUE)
+drzave_izobrazba <- url_izobrazba[[1]]
+drzave_izobrazba <- drzave_izobrazba[1:2]
+colnames(drzave_izobrazba) <- c("Drzava", "Procent_BDP")
+drzave_izobrazba$Procent_BDP <- as.numeric(drzave_izobrazba$Procent_BDP)
+
+
+velemojstri_drzave <- left_join(velemojstri_populacija, drzave_izobrazba, by="Drzava")
+
+
+
+
+
+# #IGRE VELEMOJSTROV
+# 
+# igre_mojstrov <- read_csv(file = 'podatki/igre_mojstrov.csv',  locale = locale(encoding = "Windows-1250")) %>% as.data.frame()
+# 
+# #Pobrisemo nepotrebne stolpce
+# igre_mojstrov[4] <- NULL
+# igre_mojstrov[9] <- NULL
+# igre_mojstrov[10] <- NULL
+# 
+# #Preimenujemo stolpce
+# colnames(igre_mojstrov) <- c("Sahovski_mojster", "Barva", "Nasprotnik", "Rating_nasprotnika", "Rezultat",
+#                              "Dogodek", "Lokacija", "Leto", "St_potez")
+# 
+# #Uredimo datume
+# igre_mojstrov <- igre_mojstrov %>% mutate(Leto = str_replace_all(Leto, "[?]", "1")) %>% mutate(Leto = as.POSIXct(Leto, format="%Y.%m.%d")) %>%
+#   mutate(Leto = format(Leto, format="%Y"))
+# 
+# 
+# #NEPOZABNE IGRE
+# 
+# nepozabne_igre <- read.pgn('podatki/2724_immortal_games.pgn') %>% as.data.frame()
+

@@ -49,7 +49,7 @@ graf_ratingi_otb <- ggplot(igre_magnus_otb_ratingi, aes(x=Date, y=Rating_Magnusa
 graf_ratingi_otb
 graf_ratingi_otb + geom_smooth(method = "glm", formula = y ~ poly(x,16))
 
-#Svet
+#Svet Carlsenove partije
 tmap_mode("view")
 
 tm_shape(igre_magnus_otb_turnirji_lokacije) + 
@@ -57,6 +57,23 @@ tm_shape(igre_magnus_otb_turnirji_lokacije) +
   tm_legend(position = c("left", "bottom"), 
             frame = TRUE,
             bg.color="lightblue", title="Število iger v posamezni državi")
+
+
+#SVet število velemojstrov
+
+velemojstri_drzave_zemljevid <- merge(World, velemojstri_drzave, by.x = "name", by.y = "Drzava")
+velemojstri_drzave_zemljevid[2:15] <- list(NULL)
+
+
+tm_shape(velemojstri_drzave_zemljevid) +
+  tm_polygons("Stevilo_velemojstrov", popup.vars = c("Število velemojstrov:" = "Stevilo_velemojstrov")) + 
+  tm_legend(position = c("left", "bottom"), 
+            frame = TRUE,
+            bg.color="lightblue", title="Število velemojstrov v posamezni državi")
+
+
+
+
                                                                                                                                         
 
 tm_shape(igre_magnus_otb_turnirji_lokacije) + tm_fill("Stevilo_iger", title = "Število iger", style = "fixed",
