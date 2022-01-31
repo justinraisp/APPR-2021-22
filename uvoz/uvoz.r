@@ -28,25 +28,6 @@ otvoritve[3:4] <- list(NULL)
 colnames(otvoritve) <- c("Otvoritev_eco", "Otvoritev","Tip_otvoritve")
 
 
-# #IGRE POVPRECNIH IGRALCEV NA LICHESS
-# 
-# lichess_igre <- read_csv(file = 'podatki/igre_lichess.csv',  locale = locale(encoding = "Windows-1250")) %>% as.data.frame()
-# 
-# #Pobrisemo nepotrebne stolpce
-# lichess_igre[1] <- NULL
-# lichess_igre[2:3] <- list(NULL)
-# lichess_igre[6] <- NULL
-# lichess_igre[7] <- NULL
-# lichess_igre[8:9] <- list(NULL)
-# 
-# #Preimenujemo stolpce
-# colnames(lichess_igre) <- c("Rated", "St_potez", "Tip_zmage", "Zmagovalec", "Casovna_omejitev", "Rating_belega", "Rating_crnega", "Otvoritev", "St_potez_v_odprtju")
-
-
-
-
-
-
 
 
 #IGRE MAGNUSA CARLSENA NA LICHESS
@@ -224,31 +205,4 @@ colnames(drzave_izobrazba) <- c("Drzava", "Procent_BDP")
 drzave_izobrazba$Procent_BDP <- as.numeric(drzave_izobrazba$Procent_BDP)
 
 
-velemojstri_drzave <- left_join(velemojstri_populacija, drzave_izobrazba, by="Drzava")
-
-
-
-
-
-# #IGRE VELEMOJSTROV
-# 
-# igre_mojstrov <- read_csv(file = 'podatki/igre_mojstrov.csv',  locale = locale(encoding = "Windows-1250")) %>% as.data.frame()
-# 
-# #Pobrisemo nepotrebne stolpce
-# igre_mojstrov[4] <- NULL
-# igre_mojstrov[9] <- NULL
-# igre_mojstrov[10] <- NULL
-# 
-# #Preimenujemo stolpce
-# colnames(igre_mojstrov) <- c("Sahovski_mojster", "Barva", "Nasprotnik", "Rating_nasprotnika", "Rezultat",
-#                              "Dogodek", "Lokacija", "Leto", "St_potez")
-# 
-# #Uredimo datume
-# igre_mojstrov <- igre_mojstrov %>% mutate(Leto = str_replace_all(Leto, "[?]", "1")) %>% mutate(Leto = as.POSIXct(Leto, format="%Y.%m.%d")) %>%
-#   mutate(Leto = format(Leto, format="%Y"))
-# 
-# 
-# #NEPOZABNE IGRE
-# 
-# nepozabne_igre <- read.pgn('podatki/2724_immortal_games.pgn') %>% as.data.frame()
-
+velemojstri_drzave <- left_join(velemojstri_drzave, drzave_izobrazba, by="Drzava")
