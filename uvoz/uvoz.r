@@ -10,6 +10,10 @@ library(rvest)
 
 sl <- locale("sl", decimal_mark=",", grouping_mark=".")
 
+source("lib/ratingi.R")
+source("lib/rezultati.r")
+source("lib/metoda.voditeljev.r")
+
 #KRATICE ZA DRZAVE
 data("World")
 
@@ -90,12 +94,16 @@ magnus_ratingi_Dr_Nykerstein <- as.data.frame(apply(magnus_ratingi_Dr_Nykerstein
 magnus_ratingi_Dr_Nykerstein <- tibble::rowid_to_column(magnus_ratingi_Dr_Nykerstein, "ID")
 colnames(magnus_ratingi_Dr_Nykerstein) <- c("ID", "Rating")
 magnus_ratingi_Dr_Nykerstein <- magnus_ratingi_Dr_Nykerstein[magnus_ratingi_Dr_Nykerstein$Rating > 1500,]
+magnus_ratingi_Dr_Nykerstein <- magnus_ratingi_Dr_Nykerstein[1:523,] #Enako število kot z drugim računom
 
 igre_magnus["Rating_Magnusa_Dr"] <- ratingi_funkcija_lichess(igre_magnus, "DrDrunkenstein")
 magnus_ratingi_Dr_Drunkenstein <-igre_magnus[igre_magnus$Rating_Magnusa_Dr != "0",]["Rating_Magnusa_Dr"]
 magnus_ratingi_Dr_Drunkenstein <- as.data.frame(apply(magnus_ratingi_Dr_Drunkenstein, 2,rev))
 magnus_ratingi_Dr_Drunkenstein <- tibble::rowid_to_column(magnus_ratingi_Dr_Drunkenstein, "ID")
 colnames(magnus_ratingi_Dr_Drunkenstein) <- c("ID", "Rating")
+
+magnus_ratingi_lichess <- left_join(magnus_ratingi_Dr_Drunkenstein, magnus_ratingi_Dr_Nykerstein, by="ID")
+colnames(magnus_ratingi_lichess) <- c("ID", "Rating_Drunkenstein", "Rating_Nykerstein")
 
 
 #Turnirske igre
@@ -115,7 +123,7 @@ igre_magnus_rezultati_otb["Rezultat_Magnusa"] <- rezultati_funkcija_otb(igre_mag
 #Dodam rezultate k igram
 igre_magnus_otb["Rezultat"] <- igre_magnus_rezultati_otb$Rezultat_Magnusa
 
-igre_magnus_rezultati_otb <- igre_magnus_rezultati_otb %>% group_by(Rezultat) %>%
+igre_magnus_rezultati_otb <- igre_magnus_rezultati_otb %>% group_by(Rezultat_Magnusa) %>%
   summarise(Stevilo_iger = n()) %>% as.data.frame()
 odstotki_otb <- round(igre_magnus_rezultati_otb[, "Stevilo_iger"] / sum(igre_magnus_rezultati_otb[, "Stevilo_iger"]), digits = 2)
 igre_magnus_rezultati_otb["Odstotki"] <- odstotki_otb
@@ -224,15 +232,12 @@ velemojstri_drzave[velemojstri_drzave == "Serbia"] <- "Republic of Serbia"
 velemojstri_drzave[velemojstri_drzave == "United States"] <- "United States of America"
 
 
+velemojstri_drzave1 <- velemojstri_drzave[order(-velemojstri_drzave$Velemojstri_per_capita),]
+velemojstri_drzave2 <- velemojstri_drzave[order(-velemojstri_drzave$Stevilo_velemojstrov),]
 
 
-#Delez BDP-ja porabljenega za izobrazbo
-url_izobrazba <- read_html("https://en.wikipedia.org/wiki/List_of_countries_by_spending_on_education_(%25_of_GDP)") %>% html_table(fill=TRUE)
-drzave_izobrazba <- url_izobrazba[[1]]
-drzave_izobrazba <- drzave_izobrazba[1:2]
-colnames(drzave_izobrazba) <- c("Drzava", "Procent_BDP")
-drzave_izobrazba$Procent_BDP <- as.numeric(drzave_izobrazba$Procent_BDP)
 
+velemojstri_drzave_zemljevid <- merge(World, velemojstri_drzave, by.x = "sovereignt", by.y = "Drzava")
+velemojstri_drzave_zemljevid[2:15] <- list(NULL)
 
-velemojstri_drzave <- left_join(velemojstri_drzave, drzave_izobrazba, by="Drzava")
 
