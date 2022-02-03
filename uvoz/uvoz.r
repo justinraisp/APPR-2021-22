@@ -108,6 +108,33 @@ igre_magnus_otb <- left_join(igre_magnus_otb, otvoritve, by=c("ECO" = "Otvoritev
 #Dodamo rating in barvo
 igre_magnus_otb[c("Rating_Magnusa", "Barva")] <- ratingi_funkcija_otb(igre_magnus_otb)
 
+#Rezultati
+igre_magnus_rezultati_otb <- rezultati_funkcija_otb(igre_magnus_otb)
+igre_magnus_rezultati_otb["Rezultat_Magnusa"] <- rezultati_funkcija_otb(igre_magnus_otb)
+
+#Dodam rezultate k igram
+igre_magnus_otb["Rezultat"] <- igre_magnus_rezultati_otb$Rezultat_Magnusa
+
+igre_magnus_rezultati_otb <- igre_magnus_rezultati_otb %>% group_by(Rezultat) %>%
+  summarise(Stevilo_iger = n()) %>% as.data.frame()
+odstotki_otb <- round(igre_magnus_rezultati_otb[, "Stevilo_iger"] / sum(igre_magnus_rezultati_otb[, "Stevilo_iger"]), digits = 2)
+igre_magnus_rezultati_otb["Odstotki"] <- odstotki_otb
+oznake_otb <- paste(odstotki_otb * 100, "%", sep="")
+igre_magnus_rezultati_otb["Oznake"] <- oznake_otb
+
+
+#Otvoritve glede na barvo in otvoritev
+otvoritve_magnusa_otb <- igre_magnus_otb %>% group_by(Rezultat, Barva, Otvoritev) %>% summarise(Stevilo_iger = n())
+otvoritve_magnusa_otb <- filter(otvoritve_magnusa_otb, Rezultat == "Won") %>% arrange(desc(Stevilo_iger))
+
+otvoritve_magnusa_beli_otb <- filter(otvoritve_magnusa_otb, Barva == "White")
+odstotki_otvoritve_beli_otb <- round(otvoritve_magnusa_beli_otb[,"Stevilo_iger"] / sum(otvoritve_magnusa_beli_otb[,"Stevilo_iger"]), digits=4)
+otvoritve_magnusa_beli_otb["Odstotki"] <- odstotki_otvoritve_beli_otb * 100
+
+otvoritve_magnusa_crni_otb <- filter(otvoritve_magnusa_otb, Barva == "Black")
+odstotki_otvoritve_crni_otb <- round(otvoritve_magnusa_crni_otb[,"Stevilo_iger"] / sum(otvoritve_magnusa_crni_otb[,"Stevilo_iger"]), digits=4)
+otvoritve_magnusa_crni_otb["Odstotki"] <- odstotki_otvoritve_crni_otb * 100
+
 #Samo raitngi over the board in njihovi datumi
 igre_magnus_otb_ratingi <- igre_magnus_otb %>% select(c("Rating_Magnusa", "Date"))
 
@@ -165,7 +192,7 @@ url_populacija <- read_html("https://www.worldometers.info/world-population/popu
 drzave_populacija <- url_populacija[[1]]
 drzave_populacija <- drzave_populacija[c("Country (or dependency)", "Population (2020)")]
 colnames(drzave_populacija) <- c("Drzava", "Populacija")
-drzave_populacija$Drzava <- drzave_populacija$Drzava %>% str_replace_all("Czech Republic (Czechia)","Czech Republic")
+drzave_populacija[drzave_populacija == "Czech Republic (Czechia)"] <- "Czech Republic"
 
 
 velemojstri_populacija <- merge(velemojstri, drzave_populacija, by.x = "Federation", by.y = "Drzava")
@@ -193,6 +220,8 @@ drzave_bdp$Drzava <- drzave_bdp$Drzava %>% str_replace_all("Czech Republic (Czec
 
 
 velemojstri_drzave <- left_join(velemojstri_populacija, drzave_bdp, by="Drzava")
+velemojstri_drzave[velemojstri_drzave == "Serbia"] <- "Republic of Serbia"
+velemojstri_drzave[velemojstri_drzave == "United States"] <- "United States of America"
 
 
 
@@ -206,3 +235,4 @@ drzave_izobrazba$Procent_BDP <- as.numeric(drzave_izobrazba$Procent_BDP)
 
 
 velemojstri_drzave <- left_join(velemojstri_drzave, drzave_izobrazba, by="Drzava")
+

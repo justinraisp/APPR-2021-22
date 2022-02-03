@@ -13,16 +13,29 @@ library(tmap)
 ##MAGNUS
 #Tortni diagram za rezultate
 
-graf_rezultati <- ggplot(rezultati_magnus, aes(x = "", y = Odstotki, fill = Rezultat_Magnusa)) +
+graf_rezultati_lichess <- ggplot(rezultati_magnus, aes(x = "", y = Odstotki, fill = Rezultat_Magnusa)) +
   geom_col(color = "black") +
   geom_label(aes(label = oznake), color = c("white", "white", "white"),
              position = position_stack(vjust = 0.5),
              show.legend = FALSE) +
   guides(fill = guide_legend(title = "Rezultat")) +
-  scale_fill_viridis_d() +
   coord_polar(theta = "y") + 
-  labs(title="Rezultati iger") +
+  labs(title="Rezultati iger preko spleta") +
   theme_void()
+graf_rezultati_lichess
+
+graf_rezultati_otb <- ggplot(igre_magnus_rezultati_otb, aes(x = "", y = Odstotki, fill = Rezultat)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = Oznake), color = c("white", "white", "white"),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  guides(fill = "none") +
+  coord_polar(theta = "y") + 
+  labs(title="Rezultati iger v živo") +
+  theme_void()
+graf_rezultati_otb
+
+graf_rezultati <- graf_rezultati_otb + graf_rezultati_lichess
 graf_rezultati
 
 
@@ -33,7 +46,15 @@ graf_beli <- ggplot(otvoritve_magnusa_beli[1:10,]) +
 graf_crni <- ggplot(otvoritve_magnusa_crni[1:10,]) + 
   aes(x=Odstotki, y = reorder(Otvoritev, Odstotki)) + geom_col() + xlim(0,15)
 graf_crni
-graf_otvoritve <- graf_beli / graf_crni
+
+graf_beli_otb <- ggplot(otvoritve_magnusa_beli_otb[1:10,]) + 
+  aes(x=Odstotki, y = reorder(Otvoritev, Odstotki)) + geom_col() + xlim(0,15)
+graf_beli_otb
+graf_crni_otb <- ggplot(otvoritve_magnusa_crni_otb[1:10,]) + 
+  aes(x=Odstotki, y = reorder(Otvoritev, Odstotki)) + geom_col() + xlim(0,15)
+graf_crni_otb
+
+graf_otvoritve <- (graf_beli + graf_beli_otb) / (graf_crni + graf_crni_otb)
 graf_otvoritve
 
 
@@ -47,7 +68,7 @@ graf_ratingi_lichess
 graf_ratingi_otb <- ggplot(igre_magnus_otb_ratingi, aes(x=Date, y=Rating_Magnusa, group=1)) +
   geom_line() + scale_x_date(date_labels = "%Y") + scale_y_continuous(limit=c(2000,3000))
 graf_ratingi_otb
-graf_ratingi_otb + geom_smooth(method = "glm", formula = y ~ poly(x,16))
+graf_ratingi_otb + geom_smooth(method = "glm", formula = y ~ poly(x,4))
 
 #Svet Carlsenove partije
 tmap_mode("view")
@@ -61,9 +82,8 @@ tm_shape(igre_magnus_otb_turnirji_lokacije) +
 
 #SVet število velemojstrov
 
-velemojstri_drzave_zemljevid <- merge(World, velemojstri_drzave, by.x = "name", by.y = "Drzava")
+velemojstri_drzave_zemljevid <- merge(World, velemojstri_drzave, by.x = "sovereignt", by.y = "Drzava")
 velemojstri_drzave_zemljevid[2:15] <- list(NULL)
-
 
 tm_shape(velemojstri_drzave_zemljevid) +
   tm_polygons("Stevilo_velemojstrov", popup.vars = c("Število velemojstrov:" = "Stevilo_velemojstrov")) + 
