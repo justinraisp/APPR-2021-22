@@ -6,3 +6,4 @@ zemljevid.sveta.k<- function(n){
   graf <- tm_shape(data) + tm_polygons("skupina")
   return(graf)
 }
+

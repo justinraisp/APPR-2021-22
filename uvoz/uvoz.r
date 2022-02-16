@@ -223,6 +223,8 @@ colnames(drzave_bdp) <- c("Drzava", "BDP_per_capita")
 drzave_bdp <- drzave_bdp %>% mutate(BDP_per_capita = str_replace_all(BDP_per_capita, "[$]", ""))
 drzave_bdp <- drzave_bdp %>% mutate(BDP_per_capita = str_replace_all(BDP_per_capita, "[,]", ""))
 drzave_bdp$BDP_per_capita <- as.numeric(drzave_bdp$BDP_per_capita)
+drzave_bdp[drzave_bdp == "Czech Republic (Czechia)"] <- "Czech Republic"
+
 
 drzave_bdp$Drzava <- drzave_bdp$Drzava %>% str_replace_all("Czech Republic (Czechia)","Czech Republic")
 
@@ -239,5 +241,6 @@ velemojstri_drzave2 <- velemojstri_drzave[order(-velemojstri_drzave$Stevilo_vele
 
 velemojstri_drzave_zemljevid <- merge(World, velemojstri_drzave, by.x = "sovereignt", by.y = "Drzava")
 velemojstri_drzave_zemljevid[2:15] <- list(NULL)
-
-
+velemojstri_drzave_zemljevid <- velemojstri_drzave_zemljevid %>% distinct()
+velemojstri_drzave_zemljevid <- rename(velemojstri_drzave_zemljevid, "Drzava" = "sovereignt")
+velemojstri_drzave_zemljevid <- na.omit(velemojstri_drzave_zemljevid)
