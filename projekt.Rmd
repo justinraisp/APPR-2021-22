@@ -152,6 +152,17 @@ premica2
 <br>
 Po drugi strani pa so podatki o številu velemojstrov per capita v odvisnosti od BDP per capita manj razpršeni ter je število velemojstrov per capita nekoliko bolj odvisno od BDP-ja per capita, saj se z večanjem BDP-ja per capita veča tudi število velemojstrov per capita.
 
+
+<br>
+<br>
+
+
+```{r zemljevid4, echo=FALSE, fig.align='center'}
+zemljevid4
+```
+
+
+
 ***
 
 ```{r shiny}

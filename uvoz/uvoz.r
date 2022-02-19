@@ -13,6 +13,11 @@ sl <- locale("sl", decimal_mark=",", grouping_mark=".")
 source("lib/ratingi.R")
 source("lib/rezultati.r")
 source("lib/metoda.voditeljev.r")
+source("lib/napaka.regresije.r")
+source("lib/precno.preverjanje.r")
+source("lib/obrisi.r")
+
+
 
 #KRATICE ZA DRZAVE
 data("World")

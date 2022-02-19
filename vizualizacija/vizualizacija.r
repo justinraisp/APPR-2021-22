@@ -105,11 +105,6 @@ zemljevid3 <- tm_shape(velemojstri_drzave_zemljevid) +
 
 zemljevida <- tmap_arrange(zemljevid2, zemljevid3, ncol = 2, widths = c(0.5,0.5))
 
-zemljevid4 <- tm_shape(velemojstri_drzave_zemljevid) +
-  tm_fill("Skupina", title = "Razvrstitev glede na BDP, število velemojstrov in številu prebivalcev",
-          popup.vars = c("Skupina" = "Skupina")) +
-  tm_borders() +
-  tm_view(view.legend.position = c("right", "bottom"))
-zemljevid4
+
 
 

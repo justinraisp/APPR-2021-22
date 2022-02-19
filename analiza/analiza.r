@@ -32,6 +32,7 @@ premica2 <- bdp_gm_pc + geom_smooth(method = "lm", formula = y ~ x) +
 
 # Datume dam v numericno obliko kot stevilo dnevov od 1/1/1970
 igre_magnus_otb_ratingi$Date.numeric = as.numeric(igre_magnus_otb_ratingi$Date)
+#igre_magnus_otb_ratingi$ID <- seq.int(nrow(igre_magnus_otb_ratingi))
 
 #4. stopnja, ker se najbolj prilega ratingu 1.2.2022
 prileganje <- lm(Rating_Magnusa ~ poly(Date.numeric,4), data=igre_magnus_otb_ratingi) 
@@ -63,11 +64,11 @@ graf_napoved <- ggplot() +
 regresija
 
 
-lin.model <- igre_magnus_otb_ratingi %>% ucenje(Rating_Magnusa ~ poly(Date.numeric,11), "ng")
+lin.model <- igre_magnus_otb_ratingi %>% ucenje(Rating_Magnusa ~ poly(Date.numeric,4), "lin.reg")
 print(igre_magnus_otb_ratingi %>% napaka_regresije(lin.model, "lin.reg"))
 pp.ratingi <- pp.razbitje(igre_magnus_otb_ratingi, stratifikacija = igre_magnus_otb_ratingi$Rating_Magnusa)
 
-print(precno.preverjanje(igre_magnus_otb_ratingi, pp.ratingi,Rating_Magnusa ~ poly(Date.numeric,11),"lin.reg", F))
+#print(precno.preverjanje(igre_magnus_otb_ratingi, pp.ratingi,Rating_Magnusa ~ poly(Date.numeric,11),"lin.reg", F))
 
 
 
@@ -86,12 +87,19 @@ skupine <- velemojstri_drzave[,-1] %>%
   kmeans(centers = 3) %>%
   getElement("cluster") %>%
   as.ordered()
-print(skupine)
+#print(skupine)
 
 velemojstri_drzave["Skupina"] <- skupine
 velemojstri_drzave[,2:5] <- NULL
 velemojstri_drzave_zemljevid <- left_join(velemojstri_drzave_zemljevid, velemojstri_drzave, by="Drzava")
 
+
+zemljevid4 <- tm_shape(velemojstri_drzave_zemljevid) +
+  tm_fill("Skupina", title = "Razvrstitev glede na BDP, število velemojstrov in številu prebivalcev",
+          popup.vars = c("Skupina" = "Skupina")) +
+  tm_borders() +
+  tm_view(view.legend.position = c("right", "bottom"))
+zemljevid4
 
 
 
