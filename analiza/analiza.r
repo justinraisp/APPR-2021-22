@@ -63,18 +63,42 @@ graf_napoved <- ggplot() +
 
 regresija
 
+formule <- c(Rating_Magnusa ~ poly(Date.numeric,1),
+             Rating_Magnusa ~ poly(Date.numeric,2),
+             Rating_Magnusa ~ poly(Date.numeric,3),
+             Rating_Magnusa ~ poly(Date.numeric,4),
+             Rating_Magnusa ~ poly(Date.numeric,5),
+             Rating_Magnusa ~ poly(Date.numeric,6),
+             Rating_Magnusa ~ poly(Date.numeric,7),
+             Rating_Magnusa ~ poly(Date.numeric,8),
+             Rating_Magnusa ~ poly(Date.numeric,9),
+             Rating_Magnusa ~ poly(Date.numeric,10))
 
-lin.model <- igre_magnus_otb_ratingi %>% ucenje(Rating_Magnusa ~ poly(Date.numeric,4), "lin.reg")
+napake <- rep(0, 15)
+for (i in 1:15){
+  formula <- Rating_Magnusa ~ poly(Date.numeric,i)
+  model <- igre_magnus_otb_ratingi %>% ucenje(formula, "lin.reg")
+  napaka <- napaka_regresije(igre_magnus_otb_ratingi, model, "lin.reg") 
+  napake[i] <- napaka
+}
+which.min(napake)
+napake
+
+
+lin.model <- igre_magnus_otb_ratingi %>% ucenje(Rating_Magnusa ~ poly(Date.numeric,8), "lin.reg")
+lin.model
 print(igre_magnus_otb_ratingi %>% napaka_regresije(lin.model, "lin.reg"))
-pp.ratingi <- pp.razbitje(igre_magnus_otb_ratingi, stratifikacija = igre_magnus_otb_ratingi$Rating_Magnusa)
+#pp.ratingi <- pp.razbitje(10, stratifikacija = igre_magnus_otb_ratingi)
+pp.ratingi <- razbitje(igre_magnus_otb_ratingi,10)
 
 #print(precno.preverjanje(igre_magnus_otb_ratingi, pp.ratingi,Rating_Magnusa ~ poly(Date.numeric,11),"lin.reg", F))
-
+#precno.preverjanje(igre_magnus_otb_ratingi, pp.ratingi,Rating_Magnusa ~ poly(Date.numeric,11),"lin.reg", F)
 
 
 
 
 #Razvrščanje v skupine
+set.seed(50)
 velemojstri_drzave$Stevilo_velemojstrov <- as.numeric(velemojstri_drzave$Stevilo_velemojstrov)
 velemojstri_drzave$Populacija <- as.numeric(velemojstri_drzave$Populacija)
 velemojstri_drzave$Velemojstri_per_capita <- as.numeric(velemojstri_drzave$Velemojstri_per_capita)
@@ -87,10 +111,10 @@ skupine <- velemojstri_drzave[,-1] %>%
   kmeans(centers = 3) %>%
   getElement("cluster") %>%
   as.ordered()
-#print(skupine)
+print(skupine)
 
 velemojstri_drzave["Skupina"] <- skupine
-velemojstri_drzave[,2:5] <- NULL
+#velemojstri_drzave[,2:5] <- NULL
 velemojstri_drzave_zemljevid <- left_join(velemojstri_drzave_zemljevid, velemojstri_drzave, by="Drzava")
 
 
@@ -104,10 +128,10 @@ zemljevid4
 
 
 #Preveril optimalno število skupin
-#r.hc = velemojstri_drzave[, -1] %>% obrisi(hc = TRUE)
-#r.km = velemojstri_drzave[, -1] %>% obrisi(hc = FALSE)
-#diagram.obrisi(r.hc)
-#diagram.obrisi(r.km)
+r.hc = velemojstri_drzave[, -1] %>% obrisi(hc = TRUE)
+r.km = velemojstri_drzave[, -1] %>% obrisi(hc = FALSE)
+diagram.obrisi(r.hc)
+diagram.obrisi(r.km)
 #Diagrama pokažeta, da sta optimalni števili 3 in 5, odločil sem se za 3, saj v primeru 5ih se pri prvem diagramu močno spustimo
 
 

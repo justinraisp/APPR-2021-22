@@ -166,7 +166,7 @@ zemljevid4
 ***
 
 ```{r shiny}
-#shinyAppDir("shiny", options=list(width="100%", height=600))
+shinyAppDir("shiny", options=list(width="100%", height=500))
 ```
 
 *** 

@@ -16,6 +16,7 @@ source("lib/metoda.voditeljev.r")
 source("lib/napaka.regresije.r")
 source("lib/precno.preverjanje.r")
 source("lib/obrisi.r")
+source("lib/narisi.zemljevid.r")
 
 
 
@@ -167,10 +168,12 @@ spremembe <- c("BUL" = "BGR", "CRO" = "HRV", "DEN"="DNK", "ENG"="GBR", "GER"="DE
 igre_magnus_otb$Site <- igre_magnus_otb$Site %>% str_replace_all(spremembe)
 
 #Nardimo tabelo samo z drzavami in stevilom iger v posamezni drzavi
-igre_magnus_otb_turnirji_lokacije <- igre_magnus_otb %>% group_by(Site) %>%
+igre_magnus_otb$Date <- as.Date(igre_magnus_otb$Date, "%Y.%m.%d")
+igre_magnus_otb$Year <- as.integer(format(igre_magnus_otb$Date, format="%Y"))
+igre_magnus_otb_turnirji_lokacije <- igre_magnus_otb %>% group_by(Site, Year) %>%
   summarise(Stevilo_iger = n()) %>% as.data.frame()
 igre_magnus_otb_turnirji_lokacije <- merge(World, igre_magnus_otb_turnirji_lokacije, by.x = "iso_a3", by.y = "Site")
-igre_magnus_otb_turnirji_lokacije <- igre_magnus_otb_turnirji_lokacije[c("name", "Stevilo_iger")]
+igre_magnus_otb_turnirji_lokacije <- igre_magnus_otb_turnirji_lokacije[c("name", "Stevilo_iger", "Year")]
 
 
 
