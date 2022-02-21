@@ -58,6 +58,9 @@ graf_otvoritve <- (graf_beli_otb + graf_beli) / (graf_crni_otb + graf_crni) + pl
 graf_otvoritve
 
 
+
+
+
 #Rating lichess
 magnus_ratingi_lichess <- melt(magnus_ratingi_lichess, id.vars = "ID", variable.name = "Account")
 graf_ratingi_lichess <- ggplot(magnus_ratingi_lichess, aes(ID, value)) + geom_line(aes(colour = Account)) +

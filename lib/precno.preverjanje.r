@@ -46,7 +46,7 @@ pp.razbitje = function(n, k = 10, stratifikacija = NULL, seme = NULL) {
   # če ne opravljamo stratifikacije, potem vrnemo navadno razbitje
   # funkcijo sample uporabimo zato, da naključno premešamo primere
   if (is.null(stratifikacija)) {
-    return(razbitje(sample(1:n), k))
+    return(razbitje(sample(1:length(n)), k))
   }
   
   # če pa opravljamo stratifikacijo, razbitje izvedemo za vsako

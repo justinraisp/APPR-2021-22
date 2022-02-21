@@ -39,3 +39,14 @@ izbira_modela <- function(formule, stevilo_polinomov) {
     
   }
 }
+
+napaka_regresije1 = function(podatki, model) {
+  podatki %>%
+    bind_cols(Rating_Magnusa.hat = predict(model, podatki)$predictions) %>%
+    mutate(
+      izguba = (Rating_Magnusa - Rating_Magnusa.hat) ^ 2
+    ) %>%
+    select(izguba) %>%
+    unlist() %>%
+    mean()
+}

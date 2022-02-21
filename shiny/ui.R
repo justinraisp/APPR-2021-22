@@ -7,7 +7,7 @@ shinyUI(fluidPage(
                   sliderInput(
                     "leto",
                     label = "Leto:",
-                    min = 2001, max = 2020, step = 1,
+                    min = 2001, max = 2021, step = 1,
                     round = FALSE, sep = "", ticks = FALSE,
                     value = 2010
                   ))

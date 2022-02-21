@@ -11,7 +11,7 @@ shinyServer(function(input, output) {
 
 narisi_graf <- function(leto){
   graf <- ggplot(igre_magnus_otb_turnirji_lokacije %>% filter(Year == leto))+
-    aes(x = name, y = Stevilo_iger) +
+    aes(x = reorder(name, Stevilo_iger), y = Stevilo_iger) +
     geom_col(fill="#CC0000", colour="black") + 
     theme_classic() +
     labs(
