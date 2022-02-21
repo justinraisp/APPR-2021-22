@@ -172,8 +172,15 @@ igre_magnus_otb$Date <- as.Date(igre_magnus_otb$Date, "%Y.%m.%d")
 igre_magnus_otb$Year <- as.integer(format(igre_magnus_otb$Date, format="%Y"))
 igre_magnus_otb_turnirji_lokacije <- igre_magnus_otb %>% group_by(Site, Year) %>%
   summarise(Stevilo_iger = n()) %>% as.data.frame()
+
 igre_magnus_otb_turnirji_lokacije <- merge(World, igre_magnus_otb_turnirji_lokacije, by.x = "iso_a3", by.y = "Site")
 igre_magnus_otb_turnirji_lokacije <- igre_magnus_otb_turnirji_lokacije[c("name", "Stevilo_iger", "Year")]
+
+
+stevilo_iger <- igre_magnus_otb %>% group_by(Site) %>%
+  summarise(Stevilo_iger = n()) %>% as.data.frame()
+stevilo_iger <- merge(World, stevilo_iger, by.x = "iso_a3", by.y = "Site")
+stevilo_iger <- stevilo_iger[c("name", "Stevilo_iger")]
 
 
 

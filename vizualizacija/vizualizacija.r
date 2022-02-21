@@ -78,15 +78,6 @@ graf_ratingi_otb + geom_smooth(method = "glm", formula = y ~ poly(x,4))
 graf_ratingi <- graf_ratingi_lichess / graf_ratingi_otb
 
 
-#Svet Carlsenove partije
-tmap_mode("view")
-
-
-zemljevid1 <- tm_shape(igre_magnus_otb_turnirji_lokacije) + 
-  tm_fill("Stevilo_iger", title ="Število iger v državi", popup.vars = c("Število iger:" = "Stevilo_iger")) + 
-  tm_borders() +
-  tm_view(view.legend.position = c("right", "bottom")) +
-  tm_layout(title="Število odigranih iger Magnusa v državi")
 
 
 #SVet število velemojstrov
@@ -110,4 +101,11 @@ zemljevida <- tmap_arrange(zemljevid2, zemljevid3, ncol = 2, widths = c(0.5,0.5)
 
 
 
+#Svet Carlsenove partije
+tmap_mode("view")
 
+
+zemljevid1 <- tm_shape(stevilo_iger) + 
+  tm_fill("Stevilo_iger", title ="Število iger v državi", popup.vars = c("Število iger:" = "Stevilo_iger")) + 
+  tm_borders() +
+  tm_view(view.legend.position = c("right", "bottom"))

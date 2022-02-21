@@ -103,19 +103,12 @@ Izmed vseh Magnusovih partij preko spleta, sem moral razdeliti partije na dva de
 <br>
 <br>
 
-```{r zemljevid1, echo=FALSE, fig.align='center'}
-zemljevid1
-```
-
-Na prvem zemljevidu je predstavljeno število partij, ki jih je odigral v sklopu turnirjev v posamezni državi. Rusi so bili že iz časov Sovjetske Zveze svetovno znani po njhovih šahovskih velemojstrih, zato ne preseneča, da je Magnus tam odigral daleč največje število partij. Zanimivo je, da čeprav šahovski turnirji za Slovenijo niso tuji, Magnus ni nikoli odigral partije na naših tleh.
-<br>
-<br>
 
 ```{r zemljevida, echo=FALSE, fig.align='center'}
 zemljevida
 ```
 
-Druga dva zemljevida predstavljata  število velemojstrov v državi in pa velemojstre per capita v državi. Po samem številu močno prevladuje Rusija, ki ima 133 velemojstrov več kot njena sosednja država, Ukrajina, ki jih ima druga največ. Pri številu velemojstrov per capita pa močno prevladuje Islandija s približno 38 velemojstrov per capita. 
+Prva dva zemljevida predstavljata  število velemojstrov v državi in pa velemojstre per capita v državi. Po samem številu močno prevladuje Rusija, ki ima 133 velemojstrov več kot njena sosednja država, Ukrajina, ki jih ima druga največ. Pri številu velemojstrov per capita pa močno prevladuje Islandija s približno 38 velemojstrov per capita. 
 
 
 ***
@@ -133,7 +126,7 @@ graf_napoved
 ```
 <br>
 <br>
-S pomočjo linearne regresije sem aproksimiral Magnusov FIDE rating skozi leta, in sicer kot polinom četrte stopnje, saj je prva napoved za 2.1.2022 bila najbližja dejanskemu ratingu. Poskusil sem napovedati ratinge na pol leta za prihodnji dve leti.
+S pomočjo modela naključnih gozdov, sem poskusil napovedati Magnusove prihodnje ratinge. Privzel sem, da se rating spremeni približno na dva mesca. Zato sem se odločil napovedati naslednjih 12 vrednosti, torej 2 leti. Glede na napoved, bi v prihodnosti bila manjša nihanja, torej brez večjih sprememb. Potemtakem bi moral še vedno držati najvišji rating.
 
 
 <br>
@@ -155,13 +148,28 @@ Po drugi strani pa so podatki o številu velemojstrov per capita v odvisnosti od
 
 <br>
 <br>
-
+<br>
+<br>
 
 ```{r zemljevid4, echo=FALSE, fig.align='center'}
 zemljevid4
 ```
+Z metodo voditeljev sem poskušal grupirati države s podobnimi lastnostmi glede na njihovo število velemojstrov, njihov BDP per capita ter njihovim številom prebivalcev. S pomočjo obrisov sem prišel do optimalnega števila skupin, in sicer vidimo, da je ena skupina
+sestavljena samo iz Islandije, ena je sestavljena iz bolj razvitih držav Evrope, ZDA in Avstralije, zadnja pa preostali del sveta. Islandija spada v svojo skupino posebej zaradi zelo visokega števila velemojstrov per capita.
 
 
+<br>
+<br>
+
+
+```{r zemljevid1, echo=FALSE, fig.align='center'}
+zemljevid1
+```
+
+Na  zemljevidu je predstavljeno število partij, ki jih je odigral v sklopu turnirjev v posamezni državi. Rusi so bili že iz časov Sovjetske Zveze svetovno znani po njhovih šahovskih velemojstrih, zato ne preseneča, da je Magnus tam odigral daleč največje število partij. Zanimivo je, da čeprav šahovski turnirji za Slovenijo niso tuji, Magnus ni nikoli odigral partije na naših tleh.
+<br>
+<br>
+Spodaj si lahko pogledamo število partij v posamezni državi za vsako njegovo profesionalno leto., torej med leti 2001 in 2021.
 
 ***
 

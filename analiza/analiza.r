@@ -36,7 +36,7 @@ igre_magnus_otb_ratingi$Date.numeric = as.numeric(igre_magnus_otb_ratingi$Date)
 
 #4. stopnja, ker se najbolj prilega ratingu 1.2.2022
 # prileganje <- lm(Rating_Magnusa ~ poly(Date.numeric,4), data=igre_magnus_otb_ratingi) 
-# napovedni_datumi <- data.frame(Date.numeric = as.numeric(as.Date(c("2022-02-01","2022-08-01","2023-02-01", "2023-08-01"))))
+#napovedni_datumi <- data.frame(Date.numeric = as.numeric(as.Date(c("2022-02-01","2022-08-01","2023-02-01", "2023-08-01"))))
 # 
 # prediction <- mutate(napovedni_datumi, Rating_Magnusa = predict(prileganje, napovedni_datumi,interval = "prediction"))
 # prediction["Date"] <- as.Date(as.numeric(prediction$Date.numeric), origin = "1970-01-01")
@@ -95,10 +95,15 @@ igre_magnus_otb_ratingi$Date.numeric = as.numeric(igre_magnus_otb_ratingi$Date)
 #print(precno.preverjanje(igre_magnus_otb_ratingi, pp.ratingi,Rating_Magnusa ~ poly(Date.numeric,11),"lin.reg", F))
 #precno.preverjanje(igre_magnus_otb_ratingi, pp.ratingi,Rating_Magnusa ~ poly(Date.numeric,11),"lin.reg", F)
 
+#ng.model <- igre_magnus_otb_ratingi %>% ucenje(Rating_Magnusa ~ Date.numeric, "ng")
+#napaka.ng <- igre_magnus_otb_ratingi %>% napaka_regresije(ng.model, "ng")
+#napaka.ng
+#p1 = predict(ng.model, data = igre_magnus_otb_ratingi)
+#head(p1)
 
-# ng.model <- igre_magnus_otb_ratingi %>% ucenje(Rating_Magnusa ~ Date.numeric, "ng")
-# napaka.ng <- igre_magnus_otb_ratingi %>% napaka_regresije(ng.model, "ng")
-# napaka.ng
+
+#prediction <- mutate(napovedni_datumi, Rating_Magnusa = predict(ng.model, data=igre_magnus_otb_ratingi))
+
 # 
 # pp <- pp.razbitje(igre_magnus_otb_ratingi)
 # razbitje1 <- razbitje(igre_magnus_otb_ratingi[-2], 3)
@@ -119,8 +124,7 @@ naredi.df <- function(x){
 df.ng <- naredi.df(c(ratingi))
 df.ng
 model1 <- ranger(formula = ratingi ~ ., data = df.ng %>% drop_na())
-
-
+ 
 n <- nrow(df.ng)
 for(i in 1:12) {
   df.ng <- naredi.df(c(df.ng$ratingi, NA))
@@ -140,8 +144,8 @@ igre_magnus_otb_ratingi <- rbind(igre_magnus_otb_ratingi, napovedi.df)
 
 
 graf_napoved <- ggplot() +
-  geom_point(aes(x = Date,y = Rating_Magnusa),data=head(igre_magnus_otb_ratingi,-12),colour = '#3399ff', size=1) +
-  geom_point(aes(x = Date,y = Rating_Magnusa),data=tail(igre_magnus_otb_ratingi,12),colour = '#ff00ff', size=1) +
+  geom_point(aes(x = Date,y = Rating_Magnusa),data=head(igre_magnus_otb_ratingi,-12),colour = '#3399ff', size=0.8) +
+  geom_point(aes(x = Date,y = Rating_Magnusa),data=tail(igre_magnus_otb_ratingi,12),colour = '#ff00ff', size=0.8) +
   xlab(label = 'Leto') +
   ylab(label = 'Rating')
 
@@ -167,7 +171,7 @@ skupine <- velemojstri_drzave[,-1] %>%
   kmeans(centers = 3) %>%
   getElement("cluster") %>%
   as.ordered()
-print(skupine)
+#print(skupine)
 
 velemojstri_drzave["Skupina"] <- skupine
 #velemojstri_drzave[,2:5] <- NULL
