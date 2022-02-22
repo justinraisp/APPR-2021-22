@@ -68,7 +68,6 @@ Podatke, potrebne za analize sem uvozil v oblikah CSV, PGN in HTML. Podatke sem 
   - `Prebivalstvo`
   - `Velemojstri per capita`
   - `BDP per capita`
-  - `Delež BDP-ja za izobraževanje`
 
 ***
 
@@ -181,4 +180,4 @@ shinyAppDir("shiny", options=list(width="100%", height=500))
 
 ## Zaključek
 
-Pri preučevanju podatkov sem prišel do sklepa, da je najbolj efektivna otvoritev Queen's pawn opening ne glede na tip partije. Videl sem, da se tudi najboljšim da zgoditi, da jim lahko rating naglo pade, kadar igrajo preko spleta in pa čeprav o Rusih v šahu ne slišimo toliko kot v prejšnjem stoletju, so še vedno po številu velemojstrov in organizaciji turnirjev na samem vrhu. Pri primerjavi pa sem prišel do zaključka, da na število velemojstrov sam BDP ne vpliva preveč, vpliva pa na njihovo število per capita.
+Pri preučevanju podatkov sem prišel do sklepa, da je najbolj efektivna otvoritev Queen's pawn opening ne glede na tip partije. Torej kljub komentarju enega najboljših šahistov vseh časov Bobbyja Fisherja, da je e4 najboljša poteza za belega, nam Magnusova igra kaže, da to mogoče ni res, da je vendar d4 najbolj efektivna začetna poteza. Videl sem, da se tudi najboljšim da zgoditi, da jim lahko rating naglo pade, kadar igrajo preko spleta in pa čeprav o Rusih v šahu ne slišimo toliko kot v prejšnjem stoletju, so še vedno po številu velemojstrov in organizaciji turnirjev na samem vrhu. Zraven Rusije pa me je presenetila Islandija, katera ima daleč največ velemojstrov per capita Pri primerjavi pa sem prišel do zaključka, da na število velemojstrov sam BDP ne vpliva preveč, vpliva pa na njihovo število per capita.
