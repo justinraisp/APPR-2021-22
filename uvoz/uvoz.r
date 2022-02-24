@@ -16,7 +16,6 @@ source("lib/metoda.voditeljev.r")
 source("lib/napaka.regresije.r")
 source("lib/precno.preverjanje.r")
 source("lib/obrisi.r")
-source("lib/narisi.zemljevid.r")
 
 
 
@@ -190,7 +189,7 @@ stevilo_iger <- stevilo_iger[c("name", "Stevilo_iger")]
 #VELEMOJSTRI PO DRZAVAH
 
 url_gm <- read_html("https://en.wikipedia.org/wiki/List_of_chess_grandmasters") %>% html_table(fill = TRUE)
-velemojstri <- url_gm[[2]]
+velemojstri <- url_gm[[1]]
 velemojstri <- velemojstri[velemojstri$Died == "",]
 
 #Potrebno zamenjat bivse drzave in popravit, da se imensko ujema s populacijo
