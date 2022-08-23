@@ -214,6 +214,7 @@ url_populacija <- read_html("https://www.worldometers.info/world-population/popu
 drzave_populacija <- url_populacija[[1]]
 drzave_populacija <- drzave_populacija[c("Country (or dependency)", "Population (2020)")]
 colnames(drzave_populacija) <- c("Drzava", "Populacija")
+drzave_populacija[drzave_populacija == 0] <- "1,366,417,754"
 drzave_populacija[drzave_populacija == "Czech Republic (Czechia)"] <- "Czech Republic"
 
 
@@ -258,3 +259,4 @@ velemojstri_drzave_zemljevid[2:15] <- list(NULL)
 velemojstri_drzave_zemljevid <- velemojstri_drzave_zemljevid %>% distinct()
 velemojstri_drzave_zemljevid <- rename(velemojstri_drzave_zemljevid, "Drzava" = "sovereignt")
 velemojstri_drzave_zemljevid <- na.omit(velemojstri_drzave_zemljevid)
+
